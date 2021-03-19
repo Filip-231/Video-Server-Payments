@@ -30,32 +30,5 @@ class LessonDetailView(LoginRequiredMixin,View):
 
         return render(request, "courses/lesson_detail.html", context)
 
-        # course_qs=Course.objects.filter(slug=course_slug)
-        # if course_qs.exists():
-        #     course=course_qs.first()
-        #
-        # lesson_qs = course.lessons.filter(slug=lesson_slug)
-        # if lesson_qs.exists():
-        #     lesson = lesson_qs.first()
-        #
-        # context={
-        #     'object': lesson
-        #
-        # }
-        # #check usermembership type
-        # user_membership=UserMembership.objects.filter(user=request.user).first()
-        # user_membership_type=user_membership.membership.membership_type
-        # course_allowed_mem_types= course.allowed_memberships.all()
-        #
-        # context={
-        #     'object':None
-        # }
-        #
-        # #jesli istnieje taki membership type który posiada użytkownik to wyswietl
-        # if course_allowed_mem_types.filter(membership_type=user_membership_type).exists():
-        #     context={'object': lesson}
-        # return render(request, "courses/lesson_detail.html",context)
-
-
-
+       
 
