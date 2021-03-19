@@ -18,3 +18,5 @@ videoservice/courses/__pycache__/
 videoservice/videoservice/__pycache__/
 notes/
 videoservice/courses/migrations/
+videoservice/memberships/migrations/
+videoservice/memberships/__pycache__/
