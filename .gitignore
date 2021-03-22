@@ -20,3 +20,4 @@ notes/
 videoservice/courses/migrations/
 videoservice/memberships/migrations/
 videoservice/memberships/__pycache__/
+whole/
