@@ -7,14 +7,17 @@ from django.http import HttpResponseRedirect
 from django.views.generic import ListView
 from django.urls import reverse
 from .models import Membership, UserMembership, Subscription
-
 import stripe
+
+
 
 def get_user_membership(request):
     user_membership_qs=UserMembership.objects.filter(user=request.user)
     if user_membership_qs.exists:
         return user_membership_qs.first()
     return None
+
+
 def get_user_subscription(request):
     user_subscription_qs=Subscription.objects.filter(
         user_membership=get_user_membership(request))
@@ -22,8 +25,9 @@ def get_user_subscription(request):
         user_subscription= user_subscription_qs.first()
         return user_subscription
     return None
+
+
 def get_selected_membership(request):
-    #if selected membership is in the session
     membership_type=request.session['selected_membership_type']
     selected_membership_qs= Membership.objects.filter(
         membership_type=membership_type)
@@ -73,34 +77,19 @@ class MembershipSelectView(LoginRequiredMixin, ListView):
         return HttpResponseRedirect(reverse('memberships:payment'))
 
 
-
-
-
-
-
 @login_required
 def PaymentView(request):
-    print("dsad")
     user_membership = get_user_membership(request)
-
-    print(user_membership)
+    
     try:
         selected_membership = get_selected_membership(request)
-        print("done")
     except:
         return redirect(reverse("memberships:select"))
+    
     publishKey = settings.STRIPE_PUBLISHABLE_KEY
-    print("publishkey {}".format(publishKey))
-
-    print(request.method)
+    
     if request.method == "POST":
-
-
         try:
-
-
-            print(request)
-            print(request.POST['stripeToken'])
             token = request.POST['stripeToken']
 
             # UPDATE FOR STRIPE API CHANGE 2018-05-21
@@ -167,15 +156,9 @@ def updateTransactions(request, subscription_id):
 
 
 
-
-
-
-
-
 @login_required
 def cancelSubscription(request):
     #https://stripe.com/docs/api/subscriptions/cancel
-    #getting information about subscription
     user_sub = get_user_subscription(request)
 
     if user_sub.active is False:
@@ -188,8 +171,7 @@ def cancelSubscription(request):
     user_sub.active = False
     user_sub.save()
 
-    #updating subscription to free
-    free_membership = Membership.objects.get(membership_type='Free')#.first()
+    free_membership = Membership.objects.get(membership_type='Free')
     user_membership = get_user_membership(request)
     user_membership.membership = free_membership
     user_membership.save()
